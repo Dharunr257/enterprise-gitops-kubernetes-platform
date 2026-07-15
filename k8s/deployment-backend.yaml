@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: <dockerhub-username>/inventory-backend:latest
+          image: dharunr257/inventory-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
