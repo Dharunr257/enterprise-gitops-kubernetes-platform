@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ims-backend
+  namespace: inventory-system
+  labels:
+    app: ims-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ims-backend
+  template:
+    metadata:
+      labels:
+        app: ims-backend
+    spec:
+      containers:
+        - name: backend
+          image: <dockerhub-username>/inventory-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+              name: api
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: PORT
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: DB_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: DB_USER
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: DB_PORT
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: NODE_ENV
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ims-secret
+                  key: DB_PASSWORD
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 15
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3

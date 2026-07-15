@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ims-ingress
+  namespace: inventory-system
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          # Routing pattern for REST API backend endpoints
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: ims-backend-service
+                port:
+                  number: 5000
+          # Default routing pattern for frontend client pages
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ims-frontend-service
+                port:
+                  number: 80

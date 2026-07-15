@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ims-config
+  namespace: inventory-system
+data:
+  DB_NAME: "inventory_db"
+  DB_USER: "root"
+  DB_PORT: "3306"
+  DB_HOST: "ims-db-service"
+  PORT: "5000"
+  NODE_ENV: "production"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ims-secret
+  namespace: inventory-system
+type: Opaque
+data:
+  # Base64 encoded password placeholders
+  # 'rootpassword' encoded: cm9vdHBhc3N3b3Jk
+  DB_PASSWORD: "cm9vdHBhc3N3b3Jk"
+  MYSQL_ROOT_PASSWORD: "cm9vdHBhc3N3b3Jk"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ims-db
+  namespace: inventory-system
+  labels:
+    app: ims-db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: ims-db
+  template:
+    metadata:
+      labels:
+        app: ims-db
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+              name: mysql
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: ims-config
+                  key: DB_NAME
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ims-secret
+                  key: MYSQL_ROOT_PASSWORD
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - -h
+                - localhost
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
