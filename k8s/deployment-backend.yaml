@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: dharunr257/inventory-backend:d3bea1b1cfe790ae6a3349ee0416ef3a9a57c79f
+          image: dharunr257/inventory-backend:1e9095e1c6e9389075303513e38c4e5a7f4b0741
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
