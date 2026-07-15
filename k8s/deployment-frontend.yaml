@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: dharunr257/inventory-frontend:d720d1b22edf415411f020aa37d9957fbcc9d37a
+          image: dharunr257/inventory-frontend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
