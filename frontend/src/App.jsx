@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
@@ -12,6 +12,18 @@ import { ToastProvider } from './components/Toast';
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   return (
     <ToastProvider>
@@ -25,7 +37,7 @@ function App() {
           <div className="main-content">
             
             {/* Top Navigation Bar */}
-            <Navbar toggleSidebar={setSidebarOpen} />
+            <Navbar toggleSidebar={setSidebarOpen} theme={theme} toggleTheme={toggleTheme} />
 
             {/* Dynamic Routed Views */}
             <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>

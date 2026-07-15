@@ -45,6 +45,59 @@ const Dashboard = () => {
 
   return (
     <div className="page-container">
+      {/* GitOps Delivery Control Center Status Header */}
+      <div className="panel-card" style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between', 
+        padding: '16px 24px', 
+        marginBottom: '24px', 
+        borderLeft: '4px solid var(--color-success)',
+        background: 'var(--bg-card)',
+        borderRadius: 'var(--radius-md)',
+        boxShadow: 'var(--shadow-sm)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Glowing Green Sync Icon */}
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-success)',
+              display: 'inline-block'
+            }}></span>
+            <span style={{
+              width: '24px',
+              height: '24px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-success)',
+              opacity: '0.2',
+              position: 'absolute',
+              animation: 'spin 2s linear infinite',
+              display: 'inline-block',
+              transform: 'scale(1.5)'
+            }}></span>
+          </div>
+          <div>
+            <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: '600' }}>GitOps Cluster Deployment</h4>
+            <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+              Environment: <strong style={{ color: 'var(--text-primary)' }}>Production-K8s</strong> • Namespace: <strong style={{ color: 'var(--text-primary)' }}>inventory-system</strong>
+            </p>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'center', fontSize: '0.8rem' }}>
+          <div style={{ textAlign: 'right' }}>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.7rem', textTransform: 'uppercase', fontWeight: '600' }}>Argo CD Sync</span>
+            <span style={{ fontWeight: '600', color: 'var(--color-success)' }}>Synced (HEAD)</span>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.7rem', textTransform: 'uppercase', fontWeight: '600' }}>Pipeline Status</span>
+            <span style={{ fontWeight: '600', color: 'var(--color-primary)' }}>Active (paths-filtered)</span>
+          </div>
+        </div>
+      </div>
+
       {/* Overview stats cards */}
       <div className="dashboard-grid">
         {/* Total Products */}
