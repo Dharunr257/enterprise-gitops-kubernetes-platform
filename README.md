@@ -823,8 +823,4 @@ Possible improvements for future iterations of this project include:
 **Dharun R**
 **Enterprise Kubernetes Observability Platform**
 
-<<<<<<< HEAD
 ---
-=======
----
->>>>>>> 670b175 (add project documentation screenshots demonstrating platform components and workflows)
