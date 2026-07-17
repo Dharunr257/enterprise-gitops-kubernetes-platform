@@ -129,7 +129,7 @@ Inventory Management System
                              ▼
                   Kind Kubernetes Cluster
                              │
-      ┌───────────────┬───────────────┬───────────────┐
+      ┌───────────────┬───────────────┬
       ▼               ▼               ▼
  Frontend        Backend          MySQL Database
  Deployment      Deployment        Deployment
